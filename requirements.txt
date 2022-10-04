@@ -1,0 +1,5 @@
+dependency-injector==4.40.0
+pydantic==1.10.2
+python-dotenv==0.21.0
+six==1.16.0
+typing_extensions==4.3.0
