@@ -15,4 +15,4 @@ class AbstractProcessor(IProcessor):
             return self._next_processor.handle(data)
         return data
 
-    
+        
