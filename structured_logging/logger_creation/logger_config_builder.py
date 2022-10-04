@@ -31,7 +31,7 @@ class LoggerConfigBuilder:
         raise NotImplementedError()
 
     def add_processor(self, processor: IProcessor) -> 'LoggerConfigBuilder':
-        raise NotImplementedError()
+        self.logger_cf.processor = processor
 
     def _clear(self):
         raise NotImplementedError()
