@@ -32,9 +32,14 @@ class LoggerConfigBuilder:
 
     def add_processor(self, processor: IProcessor) -> 'LoggerConfigBuilder':
         self.logger_cf.processor = processor
+        return self.logger_cf
 
     def _clear(self):
-        raise NotImplementedError()
+        self.logger_cf.sink = None
+        self.logger_cf.processor = None
+        self.logger_cf.is_async = None
+        self.logger_cf.async_wait_delay_in_seconds = None
+        return self.logger_cf
 
     def build(self) -> LoggerConfig:
         raise NotImplementedError()
