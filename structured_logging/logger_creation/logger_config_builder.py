@@ -1,9 +1,11 @@
+from imp import NullImporter
 from structured_logging.configuration.environment import Environment
 from structured_logging.configuration.logger_config import LoggerConfig
 from structured_logging.processors.I_processor import IProcessor
 from structured_logging.sinks.I_sink import ISink
 from structured_logging.sinks.file_sink import FileSink
 from structured_logging.sinks.console_sink import ConsoleSink
+from structured_logging.processors.null_processor import NullProcessor
 
 
 class LoggerConfigBuilder:
@@ -35,11 +37,11 @@ class LoggerConfigBuilder:
         return self.logger_cf
 
     def _clear(self):
-        self.logger_cf.sink = None
-        self.logger_cf.processor = None
-        self.logger_cf.is_async = None
-        self.logger_cf.async_wait_delay_in_seconds = None
+        self.logger_cf.sink = ConsoleSink()
+        self.logger_cf.processor = NullProcessor()
+        self.logger_cf.is_async = False
+        self.logger_cf.async_wait_delay_in_seconds = 0
         return self.logger_cf
 
     def build(self) -> LoggerConfig:
-        raise NotImplementedError()
+        return self.logger_cf
