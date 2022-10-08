@@ -1,6 +1,7 @@
 from typing import Any, Iterable
 from structured_logging.command_queue.queue import Queue
 from structured_logging.configuration.logger_config import LoggerConfig
+from structured_logging.logger.logging_command import LoggingCommand
 
 
 class Logger:
@@ -9,4 +10,10 @@ class Logger:
         self.__logging_queue = logging_queue
 
     def log(self, **kwargs: Iterable[Any]):
-        raise NotImplementedError()
+        data = self.__logger_config.processor(kwargs)
+        logging_command = LoggingCommand(self.__logger_config.sink, data)
+        if self.__logger_config.is_async:
+            self.__logging_queue.add(logging_command)
+        else:
+            logging_command.excecute()
+        

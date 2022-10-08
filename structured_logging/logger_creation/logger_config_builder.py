@@ -30,7 +30,8 @@ class LoggerConfigBuilder:
         return self.logger_cf
 
     def add_environment(self, environment: Environment) -> 'LoggerConfigBuilder':
-        raise NotImplementedError()
+        self.logger_cf.environment = environment
+        return self.logger_cf
 
     def add_processor(self, processor: IProcessor) -> 'LoggerConfigBuilder':
         self.logger_cf.processor = processor
