@@ -18,4 +18,4 @@ def create_logger_config(settings: Settings) -> LoggerConfig:
         logger_config_builder.add_environment(config_env.staging)
     if settings.environment == Environment.PRODUCTION:
         logger_config_builder.add_environment(config_env.production)
-    return logger_config_builder.logger_cf
+    return logger_config_builder.build()

@@ -10,39 +10,49 @@ from structured_logging.processors.null_processor import NullProcessor
 
 class LoggerConfigBuilder:
     def __init__(self):
-        self.logger_cf = LoggerConfig()
+        self.sink = ConsoleSink()
+        self.processor = NullProcessor()
+        self.is_async = False
+        self.async_wait_delay_in_seconds = 0
+        self.environment = None
 
     def with_custom_sink(self, sink: ISink) -> 'LoggerConfigBuilder':
-        self.logger_cf.sink = sink
-        return self.logger_cf
+        self.sink = sink
+        return self
 
     def with_file_sink(self, file_path: str) -> 'LoggerConfigBuilder':
-        self.logger_cf.sink = FileSink(file_path)
-        return self.logger_cf
+        self.sink = FileSink(file_path)
+        return self
 
     def with_console_sink(self) -> 'LoggerConfigBuilder':
-        self.logger_cf.sink = ConsoleSink()
-        return self.logger_cf
+        self.sink = ConsoleSink()
+        return self
 
     def as_async(self, wait_delay_in_seconds: int) -> 'LoggerConfigBuilder':
-        self.logger_cf.is_async = True
-        self.logger_cf.async_wait_delay_in_seconds = wait_delay_in_seconds
-        return self.logger_cf
+        self.is_async = True
+        self.async_wait_delay_in_seconds = wait_delay_in_seconds
+        return self
 
     def add_environment(self, environment: Environment) -> 'LoggerConfigBuilder':
-        self.logger_cf.environment = environment
-        return self.logger_cf
+        self.environment = environment
+        return self
 
     def add_processor(self, processor: IProcessor) -> 'LoggerConfigBuilder':
-        self.logger_cf.processor = processor
-        return self.logger_cf
+        self.processor = processor
+        return self
 
     def _clear(self):
-        self.logger_cf.sink = ConsoleSink()
-        self.logger_cf.processor = NullProcessor()
-        self.logger_cf.is_async = False
-        self.logger_cf.async_wait_delay_in_seconds = 0
-        return self.logger_cf
+        self.sink = ConsoleSink()
+        self.processor = NullProcessor()
+        self.is_async = False
+        self.async_wait_delay_in_seconds = 0
+        return self
 
     def build(self) -> LoggerConfig:
-        return self.logger_cf
+        return LoggerConfig(
+            sink = self.sink,
+            processor = self.processor, 
+            is_async = self.is_async, 
+            async_wait_delay_in_seconds = self.async_wait_delay_in_seconds,
+            environment = self.environment
+            )

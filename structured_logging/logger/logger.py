@@ -10,7 +10,7 @@ class Logger:
         self.__logging_queue = logging_queue
 
     def log(self, **kwargs: Iterable[Any]):
-        data = self.__logger_config.processor(kwargs)
+        data = self.__logger_config.processor.handle(kwargs)
         logging_command = LoggingCommand(self.__logger_config.sink, data)
         if self.__logger_config.is_async:
             self.__logging_queue.add(logging_command)
